@@ -56,8 +56,7 @@ router.post("/login", async (req, res) => {
         
     }
     else {
-      console.log("hello");
-      return res.status(400).json({ error: "Invalid Credentials" });
+      return res.status(400).json({ error: "Unregistered Number" });
     }
 
   } 
@@ -66,6 +65,9 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get('/',authenticate,(req,res)=>{ 
+  res.send(req.rootUser);
+})
 
 router.get('/logout',(req,res)=>{ 
   res.clearCookie('jwtoken', {path : '/'})

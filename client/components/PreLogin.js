@@ -35,7 +35,7 @@ function PreLogin() {
     return (
         <div className={classes.container}>
         <Button className={classes.register} onClick={() => router.push('/signup')}>Register</Button>
-        <Button className={classes.login}>Login</Button>
+        <Button className={classes.login} onClick={() => router.push('/login')}>Login</Button>
         </div>
     )
 }

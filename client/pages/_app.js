@@ -1,5 +1,10 @@
 import '../styles/globals.css'
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import {useStore} from '../store'
+import { wrapper } from "../store";
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+
 
 const theme = createTheme({
   palette: {
@@ -22,13 +27,19 @@ const theme = createTheme({
 });
 
 function MyApp({ Component, pageProps }) {
+  const { store, persistor } = useStore(pageProps.initialReduxState);
+
   return (
   <>
+  <Provider store={store}>
+  <PersistGate loading={null}  persistor={store.__PERSISTOR}>
   <ThemeProvider theme={theme}>
   <Component {...pageProps} />
   </ThemeProvider>
+  </PersistGate>
+  </Provider>
   </>
   )
 }
 
-export default MyApp
+export default MyApp;
