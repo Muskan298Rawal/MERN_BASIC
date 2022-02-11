@@ -5,7 +5,8 @@ import { createStore, applyMiddleware, compose } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
-import userReducer from "./reducer/userReducer";
+import rootReducer from "./reducer/index";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 let store;
 
@@ -30,19 +31,19 @@ function initStore(initialState) {
 
   if (isClient) {
     newStore = createStore(
-      persistReducer(persistConfig, userReducer),
+      persistReducer(persistConfig, rootReducer),
       initialState,
     //   composeEnhancers(applyMiddleware(thunkMiddleware))
-      // composeWithDevTools(applyMiddleware(thunkMiddleware))
+      composeWithDevTools()
     );
 
     newStore.__PERSISTOR = persistStore(newStore);
   } else {
     newStore = createStore(
-        userReducer,
+        rootReducer,
       initialState,
     //   composeEnhancers(applyMiddleware(thunkMiddleware))
-      // composeWithDevTools(applyMiddleware(thunkMiddleware))
+      composeWithDevTools()
     );
   }
   return newStore;

@@ -17,7 +17,8 @@ const userReducer = function (state = initialState, action) {
             };
         }
         default: {
-            return initialState
+            // debugger
+            return state
         }
     }
 }

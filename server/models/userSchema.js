@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  time: {
+    type: String,
+  },
   tokens : [
       {
           token : {
@@ -49,6 +52,17 @@ userSchema.methods.generateAuthToken = async function(){
         console.log(err);
     }
 }
+
+userSchema.methods.addMessage = async function (time) {
+  console.log("time",time)
+  try {
+    this.time = time;
+    await this.save();
+    return this.time;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 const User = mongoose.model("USER", userSchema);
 

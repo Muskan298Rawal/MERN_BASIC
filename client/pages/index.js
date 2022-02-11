@@ -5,8 +5,8 @@ import PreLogin from "../components/PreLogin";
 // import userReducer from "../reducer/userReducer";
 
 export default function Home() {
-  const {user} = useSelector(state => state)
-  debugger
+  const {user} = useSelector(state => state.userReducer)
+  // debugger
   return (
     <div>
      {user ? <PostLogin/> : <PreLogin/>}

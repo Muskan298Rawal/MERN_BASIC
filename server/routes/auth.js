@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-// const bcrypt = require("bcryptjs");
-// const jwt = require("jsonwebtoken");
-// const authenticate = require('../middleware/authenticate')
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const authenticate = require('../middleware/authenticate')
 
 require("../database/connection");
 const User = require("../models/userSchema");
@@ -65,13 +65,48 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get('/',authenticate,(req,res)=>{ 
-  res.send(req.rootUser);
-})
+router.post("/addTime",authenticate,  async (req, res) => {
+  const { time, contact } = req.body;
+  try {
+    const userContact = await User.findOne({ contact: contact });
+    console.log("userMessage", userContact)
+    if (userContact) {
+      const userMessage = await userContact.addMessage(time);
+     
+      // userContact.updateOne(
+      //   {contact: contact}, 
+      //   {time : time },
+      //   {multi:true}, 
+      //     );
+          // console.log("userConact", userContact)
+      await userContact.save();
+      return res.status(200).json({ message: "Time Saved Successfully" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// router.get('/',authenticate,(req,res)=>{ 
+//   res.send(req.rootUser);
+// })
 
 router.get('/logout',(req,res)=>{ 
   res.clearCookie('jwtoken', {path : '/'})
   res.status(200).send("User Log out successfully");
 })
+
+router.get("/getData", async function (req, res) {   
+  const rootUser = await User.find({})
+  return res.send(rootUser)
+})
+
+
+router.get("/deleteTime", async function (req, res) {   
+  const rootUser = await User.find({})
+  console.log("hello",rootUser)
+  return res.send(rootUser)
+})
+
 
 module.exports = router;

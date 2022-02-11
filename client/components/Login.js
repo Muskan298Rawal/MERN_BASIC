@@ -58,14 +58,13 @@ function Login() {
         contact
       })
       .then((response) => {
+
         if(response.status === 200){
-            dispatch({ type: "SET_USER", payload: "user logged In"})
+            let contact = JSON.parse(response.config.data);
+            let finalContact = contact.contact;
+            dispatch({ type: "SET_USER", payload: finalContact });
         }
-        //   console.log("Muskan", response)
-        // if(typeof window !== "undefined"){
-        //     localStorage.setItem("userLoggedIn", true)
-        // }
-        window.alert("Login Successful") 
+          console.log("Muskan", response)
         router.push('/')
       }, (error) => {
         console.log(error.response.data.error)
